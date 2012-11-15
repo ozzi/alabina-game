@@ -30,6 +30,7 @@ class LevelManager : public QAbstractListModel
     Q_OBJECT
     std::vector<std::shared_ptr<LevelDescription>> _levels;
     unsigned _currentLevel;
+    QString _imagesPath;
 
     std::shared_ptr<LevelDescription> parseLevel (QXmlStreamReader* aXmlStreamReader);
     Chapters parseChapters (QXmlStreamReader* aXmlStreamReader);
@@ -58,6 +59,7 @@ public:
     Q_INVOKABLE void setLevel (unsigned aNewLevel);
 
     void initFromXML (const QString & aXmlContent);
+    void setImagesPath (const QString & aImagesPath);
 signals:
     void levelChanged(const std::shared_ptr<LevelDescription> & aLevelDescription);
 public slots:

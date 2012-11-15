@@ -21,7 +21,6 @@ class DescriptionManager : public QAbstractListModel
     Q_OBJECT
     std::vector<Image> _images;
     QString _description;
-    int _rowCount, _columnCount;
     void setMaxColumn (int aMaxColumn);
     void setMaxRow (int aMaxRow);
 public:

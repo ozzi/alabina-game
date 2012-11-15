@@ -2,6 +2,7 @@
 #include <cassert>
 #include <QXmlStreamReader>
 #include <QDebug>
+#include "crashlogger.h"
 
 LevelManager::LevelManager(QObject *parent) :
     QAbstractListModel(parent), _currentLevel(0)
@@ -12,6 +13,11 @@ LevelManager::LevelManager(QObject *parent) :
     role_names.insert(LevelImageRole, "levelImage");
     role_names.insert(LevelDescriptionRole, "levelDescription");
     setRoleNames(role_names);
+}
+
+void LevelManager::setImagesPath (const QString & aImagesPath)
+{
+    _imagesPath = aImagesPath;
 }
 
 int LevelManager::rowCount (const QModelIndex & aParent) const
@@ -76,6 +82,7 @@ void LevelManager::initFromXML (const QString & aXmlContent)
 std::shared_ptr<LevelDescription> LevelManager::parseLevel(QXmlStreamReader* aXmlStreamReader)
 {
     assert(aXmlStreamReader);
+    CrashLogger logger("LevelManager::parseLevel");
     auto result = std::make_shared<LevelDescription>();
     while (!aXmlStreamReader->atEnd() &&
            !(aXmlStreamReader->isEndElement() && aXmlStreamReader->name() == "level")) {
@@ -86,7 +93,7 @@ std::shared_ptr<LevelDescription> LevelManager::parseLevel(QXmlStreamReader* aXm
             } else if (aXmlStreamReader->name() == "description") {
                 result->_description = aXmlStreamReader->readElementText();
             } else if (aXmlStreamReader->name() == "image") {
-                result->_imagePath = aXmlStreamReader->readElementText();
+                result->_imagePath = _imagesPath + aXmlStreamReader->readElementText();
             } else if (aXmlStreamReader->name() == "chapters") {
                 result->_chapters = parseChapters(aXmlStreamReader);
             }
@@ -98,6 +105,7 @@ std::shared_ptr<LevelDescription> LevelManager::parseLevel(QXmlStreamReader* aXm
 Chapters LevelManager::parseChapters(QXmlStreamReader* aXmlStreamReader)
 {
     assert(aXmlStreamReader);
+    CrashLogger logger("LevelManager::parseChapters");
     Chapters result;
     while (!aXmlStreamReader->atEnd() &&
            !(aXmlStreamReader->isEndElement() && aXmlStreamReader->name() == "chapters")) {
@@ -114,6 +122,7 @@ Chapters LevelManager::parseChapters(QXmlStreamReader* aXmlStreamReader)
 Chapter LevelManager::parseChapter(QXmlStreamReader* aXmlStreamReader)
 {
     assert(aXmlStreamReader);
+    CrashLogger logger("LevelManager::parseChapter");
     Chapter result;
     while (!aXmlStreamReader->atEnd() &&
            !(aXmlStreamReader->isEndElement() && aXmlStreamReader->name() == "chapter")) {
@@ -134,6 +143,7 @@ Chapter LevelManager::parseChapter(QXmlStreamReader* aXmlStreamReader)
 std::vector<DescriptionScene> LevelManager::parseDescriptions(QXmlStreamReader* aXmlStreamReader)
 {
     assert(aXmlStreamReader);
+    CrashLogger logger("LevelManager::parseDescriptions");
     std::vector<DescriptionScene> result;
     while (!aXmlStreamReader->atEnd() &&
            !(aXmlStreamReader->isEndElement() && aXmlStreamReader->name() == "descriptions")) {
@@ -147,9 +157,10 @@ std::vector<DescriptionScene> LevelManager::parseDescriptions(QXmlStreamReader* 
     return result;
 }
 
-DescriptionScene LevelManager::parseDescription(QXmlStreamReader *aXmlStreamReader)
+DescriptionScene LevelManager::parseDescription (QXmlStreamReader *aXmlStreamReader)
 {
     assert(aXmlStreamReader);
+    CrashLogger logger("LevelManager::parseDescription");
     DescriptionScene result;
     while (!aXmlStreamReader->atEnd() &&
            !(aXmlStreamReader->isEndElement() && aXmlStreamReader->name() == "description")) {
@@ -157,6 +168,7 @@ DescriptionScene LevelManager::parseDescription(QXmlStreamReader *aXmlStreamRead
         if (aXmlStreamReader->isStartElement()) {
             if (aXmlStreamReader->name() == "content") {
                 result._description = aXmlStreamReader->readElementText();
+                qDebug() << "LevelManager::parseDescription " << result._description.size();
             } else if (aXmlStreamReader->name() == "images") {
                 result._images = parseImages(aXmlStreamReader);
             }
@@ -168,6 +180,7 @@ DescriptionScene LevelManager::parseDescription(QXmlStreamReader *aXmlStreamRead
 std::vector<Image> LevelManager::parseImages (QXmlStreamReader* aXmlStreamReader)
 {
     assert(aXmlStreamReader);
+    CrashLogger logger("LevelManager::parseImages");
     std::vector<Image> result;
     while (!aXmlStreamReader->atEnd() &&
            !(aXmlStreamReader->isEndElement() && aXmlStreamReader->name() == "images")) {
@@ -183,6 +196,8 @@ std::vector<Image> LevelManager::parseImages (QXmlStreamReader* aXmlStreamReader
 
 Image LevelManager::parseImage (QXmlStreamReader* aXmlStreamReader)
 {
+    assert(aXmlStreamReader);
+    CrashLogger logger("LevelManager::parseImage");
     Image result;
     while (!aXmlStreamReader->atEnd() &&
            !(aXmlStreamReader->isEndElement() && aXmlStreamReader->name() == "imagedesc")) {
@@ -191,7 +206,7 @@ Image LevelManager::parseImage (QXmlStreamReader* aXmlStreamReader)
             if (aXmlStreamReader->name() == "title") {
                 result.description = aXmlStreamReader->readElementText();
             } else if (aXmlStreamReader->name() == "path") {
-                result.path = aXmlStreamReader->readElementText();
+                result.path = _imagesPath + aXmlStreamReader->readElementText();
             }
         }
     }
@@ -201,6 +216,7 @@ Image LevelManager::parseImage (QXmlStreamReader* aXmlStreamReader)
 std::vector<TestScene> LevelManager::parseTests(QXmlStreamReader* aXmlStreamReader)
 {
     assert(aXmlStreamReader);
+    CrashLogger logger("LevelManager::parseTests");
     std::vector<TestScene> result;
     while (!aXmlStreamReader->atEnd() &&
            !(aXmlStreamReader->isEndElement() && aXmlStreamReader->name() == "tests")) {
@@ -217,6 +233,7 @@ std::vector<TestScene> LevelManager::parseTests(QXmlStreamReader* aXmlStreamRead
 TestScene LevelManager::parseTest(QXmlStreamReader *aXmlStreamReader)
 {
     assert(aXmlStreamReader);
+    CrashLogger logger("LevelManager::parseTest");
     TestScene result;
     while (!aXmlStreamReader->atEnd() &&
            !(aXmlStreamReader->isEndElement() && aXmlStreamReader->name() == "test")) {
@@ -238,6 +255,7 @@ TestScene LevelManager::parseTest(QXmlStreamReader *aXmlStreamReader)
 std::vector<Variant> LevelManager::parseVariants(QXmlStreamReader *aXmlStreamReader)
 {
     assert(aXmlStreamReader);
+    CrashLogger logger("LevelManager::parseVariants");
     std::vector<Variant> result;
     while (!aXmlStreamReader->atEnd() &&
            !(aXmlStreamReader->isEndElement() && aXmlStreamReader->name() == "variants")) {
@@ -253,6 +271,8 @@ std::vector<Variant> LevelManager::parseVariants(QXmlStreamReader *aXmlStreamRea
 
 Variant LevelManager::parseVariant(QXmlStreamReader *aXmlStreamReader)
 {
+    assert(aXmlStreamReader);
+    CrashLogger logger("LevelManager::parseVariant");
     Variant result;
     while (!aXmlStreamReader->atEnd() &&
            !(aXmlStreamReader->isEndElement() && aXmlStreamReader->name() == "variant")) {

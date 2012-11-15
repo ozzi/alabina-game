@@ -11,12 +11,12 @@
 class SceneManager : public QObject
 {
     Q_OBJECT
-    enum class SceneState
+    enum SceneState
     {
-        Description,
-        Test,
-        Final,
-        Initial
+        SS_Description,
+        SS_Test,
+        SS_Final,
+        SS_Initial
     };
 
     Chapters _chapters;

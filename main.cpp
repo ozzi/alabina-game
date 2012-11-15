@@ -32,6 +32,7 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
     QFile xml_file(":/database.xml");
     xml_file.open(QIODevice::ReadOnly);
     QString xml_content (QString::fromUtf8(xml_file.readAll(), xml_file.size()));
+    level_manager.setImagesPath(QString::fromUtf8("../../../../../Dropbox/алабина игра/"));
     level_manager.initFromXML(xml_content);
 
     QmlApplicationViewer viewer;

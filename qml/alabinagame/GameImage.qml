@@ -3,10 +3,13 @@ import QtQuick 1.1
 
 Image {
     id: gameImage
-    property string imagePath: "http://qt.nokia.com/logo.png"
     signal buttonPressed
-    source: imagePath
     fillMode: Image.PreserveAspectFit
+    asynchronous: true
+    cache: false
+    smooth: true
+    sourceSize.width: 1280
+    sourceSize.height: 1024
     MouseArea {
         anchors.fill: parent
         onClicked: buttonPressed()

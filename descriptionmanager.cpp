@@ -5,7 +5,7 @@
 #include "crashlogger.h"
 
 DescriptionManager::DescriptionManager(QObject *parent) :
-    QAbstractListModel(parent), _rowCount(0), _columnCount(0)
+    QAbstractListModel(parent)
 {
     QHash<int, QByteArray> role_names;
     role_names.insert(ImagePathRole, "imagePath");
@@ -13,22 +13,25 @@ DescriptionManager::DescriptionManager(QObject *parent) :
     setRoleNames(role_names);
 }
 
-int DescriptionManager::rowCount (const QModelIndex & /*aParent*/) const
+int DescriptionManager::rowCount (const QModelIndex& aParent) const
 {
-    return _rowCount;
+    return _images.size();
 }
 
-int DescriptionManager::columnCount(const QModelIndex &parent) const
+int DescriptionManager::columnCount(const QModelIndex& aParent) const
 {
-    int size = _images.size() - _columnCount * parent.row();
-    return size >= _columnCount ? _columnCount : (size > 0 ? size : 0);
+    return 1;
 }
 
 QVariant DescriptionManager::data (const QModelIndex & aIndex, int aRole) const
 {
+    CrashLogger log("DescriptionManager::data");
     QVariant result;
     if (aIndex.isValid()) {
-        auto image = _images.at(aIndex.row() * _columnCount + aIndex.column());
+        //unsigned image_index = aIndex.row() * _columnCount + aIndex.column();
+        unsigned image_index = aIndex.row();
+        qDebug() << "image index == " << image_index << " images.size" << _images.size();
+        auto image = _images.at(image_index);
         switch (static_cast<ImageRoles>(aRole))
         {
         case ImagePathRole:
@@ -42,7 +45,9 @@ QVariant DescriptionManager::data (const QModelIndex & aIndex, int aRole) const
             assert(FALSE);
             break;
         }
-      }
+    } else {
+        qDebug() << "invalid index!!!!";
+    }
     return result;
 }
 
@@ -58,16 +63,10 @@ QString DescriptionManager::imagePath() const
 
 void DescriptionManager::newScene(const DescriptionScene &aDescriptionScene)
 {
-    CrashLogger logger("DescriptionManager::newScene");
     _description = aDescriptionScene._description;
+    qDebug() << "DescriptionManager::newScene " << _description.size();
     emit descriptionChanged();
     beginResetModel();
     _images = aDescriptionScene._images;
-    _rowCount = _columnCount = sqrt(_images.size());
-    if ((_rowCount * _columnCount) < _images.size()) {
-        ++_rowCount;
-        ++_columnCount;
-    }
-    qDebug() << "DescriptionManager _images.size " << _images.size() << " columnt size " << _columnCount << " row size " << _rowCount;
     endResetModel();
 }

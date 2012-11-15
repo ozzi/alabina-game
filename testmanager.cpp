@@ -13,14 +13,12 @@ TestManager::TestManager(QObject *parent) :
 
 int TestManager::rowCount(const QModelIndex &/*aParent*/) const
 {
-    qDebug() << "TestManager::rowCount " << _variants.size();
     return _variants.size();
 }
 
 QVariant TestManager::data(const QModelIndex &aIndex, int aRole) const
 {
     QVariant ret_value;
-    qDebug() << "TestManager::data " << aIndex.row();
     if (aIndex.isValid()) {
         switch (static_cast<VariantRoles>(aRole))
         {

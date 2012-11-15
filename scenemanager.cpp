@@ -4,7 +4,7 @@
 #include "crashlogger.h"
 
 SceneManager::SceneManager(QObject *parent) :
-    QObject(parent), _state(SceneState::Final)
+    QObject(parent), _state(SS_Final)
 {
     ;
 }
@@ -12,36 +12,35 @@ SceneManager::SceneManager(QObject *parent) :
 void SceneManager::reset()
 {
     _chapter = _chapters.begin();
-    _state = SceneState::Initial;
+    _state = SS_Initial;
     nextScene();
 }
 
 void SceneManager::nextScene()
 {
-    CrashLogger logger("nextscene");
     SceneState new_scene_state = _state;
     do {
-        if (new_scene_state == SceneState::Initial) {
+        if (new_scene_state == SS_Initial) {
             if (_chapter == _chapters.end()) {
-                new_scene_state = SceneState::Final;
+                new_scene_state = SS_Final;
             } else {
-                new_scene_state = SceneState::Description;
+                new_scene_state = SS_Description;
                 _description = _chapter->_descriptions.begin();
                 _test = _chapter->_tests.begin();
             }
-        } else if (new_scene_state == SceneState::Description) {
+        } else if (new_scene_state == SS_Description) {
             ++_description;
-        } else if (new_scene_state == SceneState::Test) {
+        } else if (new_scene_state == SS_Test) {
             ++_test;
         }
-        if (new_scene_state == SceneState::Description && _description == _chapter->_descriptions.end()) {
-            new_scene_state = SceneState::Test;
+        if (new_scene_state == SS_Description && _description == _chapter->_descriptions.end()) {
+            new_scene_state = SS_Test;
         }
-        if (new_scene_state == SceneState::Test && _test == _chapter->_tests.end()) {
-            new_scene_state = SceneState::Initial;
+        if (new_scene_state == SS_Test && _test == _chapter->_tests.end()) {
+            new_scene_state = SS_Initial;
             ++_chapter;
         }
-    } while (new_scene_state == SceneState::Initial);
+    } while (new_scene_state == SS_Initial);
     notifyCurrentScene(new_scene_state);
 }
 
@@ -58,11 +57,11 @@ QString SceneManager::state() const
 
     switch (_state)
     {
-    case SceneState::Description:
+    case SS_Description:
         return DescriptionState;
-    case SceneState::Test:
+    case SS_Test:
         return TestState;
-    case SceneState::Final:
+    case SS_Final:
     default:
         return FinalState;
     }
@@ -82,15 +81,14 @@ void SceneManager::notifyCurrentScene (SceneState new_scene_state)
     }
     switch (_state)
     {
-    case SceneState::Description:
+    case SS_Description:
         emit descriptionChanged(*_description);
         break;
-    case SceneState::Test:
+    case SS_Test:
         emit testChanged(*_test);
         break;
-    case SceneState::Final:
+    case SS_Final:
     default:
-        qDebug() << "FINAL scene";
         break;
     }
 }

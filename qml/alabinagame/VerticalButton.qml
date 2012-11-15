@@ -2,12 +2,12 @@
 import QtQuick 1.1
 
 CommonButton {
-    radius: 20
+    radius: 10
     opacity: 0.7
     Text {
         text: buttonText
         anchors.centerIn: parent
-        font.pointSize: 18
+        font.pointSize: 12
         elide: Text.ElideRight
         verticalAlignment: Text.AlignVCenter
         horizontalAlignment: Text.AlignHCenter
@@ -15,5 +15,8 @@ CommonButton {
         textFormat: Text.RichText
         height: parent.height/4*3
         width: parent.width/4*3
+        transform: Rotation {
+            angle: 90
+        }
     }
 }
