@@ -4,9 +4,9 @@
 #include <QObject>
 #include <memory.h>
 #include <vector>
-#include "descriptionmanager.h"
-#include "testmanager.h"
-#include "levelmanager.h"
+#include "descriptionmodel.h"
+#include "testmodel.h"
+#include "levelmodel.h"
 
 class SceneManager : public QObject
 {

@@ -3,6 +3,7 @@ import QtQuick 1.1
 
 ActiveScreen {
     property string descriptionText
+    property string descriptionImage
     signal imagePressed
     signal nextPressed
     signal prevPressed
@@ -41,7 +42,7 @@ ActiveScreen {
             id: chapterImage
             width: parent.width
             height: width
-            source: cDescriptionModel.imagePath
+            source: descriptionImage
             onButtonPressed: imagePressed()
         }
 

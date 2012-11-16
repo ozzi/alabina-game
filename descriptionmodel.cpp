@@ -1,10 +1,10 @@
-#include "descriptionmanager.h"
+#include "descriptionmodel.h"
 #include <cassert>
 #include <cmath>
 #include <QDebug>
 #include "crashlogger.h"
 
-DescriptionManager::DescriptionManager(QObject *parent) :
+DescriptionModel::DescriptionModel(QObject *parent) :
     QAbstractListModel(parent)
 {
     QHash<int, QByteArray> role_names;
@@ -13,24 +13,21 @@ DescriptionManager::DescriptionManager(QObject *parent) :
     setRoleNames(role_names);
 }
 
-int DescriptionManager::rowCount (const QModelIndex& aParent) const
+int DescriptionModel::rowCount (const QModelIndex& aParent) const
 {
     return _images.size();
 }
 
-int DescriptionManager::columnCount(const QModelIndex& aParent) const
+int DescriptionModel::columnCount(const QModelIndex& aParent) const
 {
     return 1;
 }
 
-QVariant DescriptionManager::data (const QModelIndex & aIndex, int aRole) const
+QVariant DescriptionModel::data (const QModelIndex & aIndex, int aRole) const
 {
-    CrashLogger log("DescriptionManager::data");
     QVariant result;
     if (aIndex.isValid()) {
-        //unsigned image_index = aIndex.row() * _columnCount + aIndex.column();
         unsigned image_index = aIndex.row();
-        qDebug() << "image index == " << image_index << " images.size" << _images.size();
         auto image = _images.at(image_index);
         switch (static_cast<ImageRoles>(aRole))
         {
@@ -51,22 +48,23 @@ QVariant DescriptionManager::data (const QModelIndex & aIndex, int aRole) const
     return result;
 }
 
-QString DescriptionManager::description() const
+QString DescriptionModel::description() const
 {
     return _description;
 }
 
-QString DescriptionManager::imagePath() const
+QString DescriptionModel::imagePath() const
 {
-    return _images.empty() ? QString() : _images.begin()->path;
+    return _imagePath;
 }
 
-void DescriptionManager::newScene(const DescriptionScene &aDescriptionScene)
+void DescriptionModel::newScene(const DescriptionScene &aDescriptionScene)
 {
-    _description = aDescriptionScene._description;
-    qDebug() << "DescriptionManager::newScene " << _description.size();
-    emit descriptionChanged();
     beginResetModel();
     _images = aDescriptionScene._images;
     endResetModel();
+    _description = aDescriptionScene._description;
+    emit descriptionChanged();
+    _imagePath = _images.empty() ? QString() : _images.begin()->path;
+    emit imagePathChanged();
 }

@@ -1,9 +1,9 @@
-#include "testmanager.h"
+#include "testmodel.h"
 #include <cassert>
 #include <QDebug>
 #include "crashlogger.h"
 
-TestManager::TestManager(QObject *parent) :
+TestModel::TestModel(QObject *parent) :
     QAbstractListModel(parent)
 {
     QHash<int, QByteArray> role_names;
@@ -11,12 +11,12 @@ TestManager::TestManager(QObject *parent) :
     setRoleNames(role_names);
 }
 
-int TestManager::rowCount(const QModelIndex &/*aParent*/) const
+int TestModel::rowCount(const QModelIndex &/*aParent*/) const
 {
     return _variants.size();
 }
 
-QVariant TestManager::data(const QModelIndex &aIndex, int aRole) const
+QVariant TestModel::data(const QModelIndex &aIndex, int aRole) const
 {
     QVariant ret_value;
     if (aIndex.isValid()) {
@@ -34,12 +34,12 @@ QVariant TestManager::data(const QModelIndex &aIndex, int aRole) const
     return ret_value;
 }
 
-QString TestManager::description() const
+QString TestModel::description() const
 {
     return _description;
 }
 
-void TestManager::setNewScene(const TestScene &aNewScene)
+void TestModel::setNewScene(const TestScene &aNewScene)
 {
     _description = aNewScene._description;
     emit descriptionChanged();
@@ -49,12 +49,12 @@ void TestManager::setNewScene(const TestScene &aNewScene)
     endResetModel();
 }
 
-void TestManager::newTest(const TestScene &aTestScene)
+void TestModel::newTest(const TestScene &aTestScene)
 {
     setNewScene(aTestScene);
 }
 
-void TestManager::tryVariant(unsigned aVarianNumber)
+void TestModel::tryVariant(unsigned aVarianNumber)
 {
     if (aVarianNumber == _correctAnswer) {
         emit hit();

@@ -3,18 +3,30 @@
 #include <QFile>
 #include "qmlapplicationviewer.h"
 #include "scenemanager.h"
-#include "descriptionmanager.h"
-#include "testmanager.h"
-#include "levelmanager.h"
+#include "descriptionmodel.h"
+#include "testmodel.h"
+#include "levelmodel.h"
+#include "resultsmodel.h"
 
 Q_DECL_EXPORT int main(int argc, char *argv[])
 {
     QScopedPointer<QApplication> app(createApplication(argc, argv));
 
-    DescriptionManager description_manager;
-    TestManager test_manager;
+    DescriptionModel description_manager;
+    TestModel test_manager;
     SceneManager scene_manager;
-    LevelManager level_manager;
+    LevelModel level_manager;
+    ResultsModel result_model;
+    QObject::connect(&test_manager, SIGNAL(hit()), &result_model, SLOT(onTestHit()));
+    QObject::connect(&test_manager, SIGNAL(miss()), &result_model, SLOT(onTestMiss()));
+    QObject::connect(&level_manager,
+                     SIGNAL(levelChanged(std::shared_ptr<LevelDescription>)),
+                     &result_model,
+                     SLOT(onNewLevel(std::shared_ptr<LevelDescription>)));
+    QObject::connect(&scene_manager,
+                     SIGNAL(testChanged(TestScene)),
+                     &result_model,
+                     SLOT(onNewTest()));
     QObject::connect(&scene_manager,
                      SIGNAL(descriptionChanged(DescriptionScene)),
                      &description_manager,
@@ -40,6 +52,7 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
     viewer.rootContext()->setContextProperty("cTestModel", &test_manager);
     viewer.rootContext()->setContextProperty("cSceneManager", &scene_manager);
     viewer.rootContext()->setContextProperty("cLevelModel", &level_manager);
+    viewer.rootContext()->setContextProperty("cResultModel", &result_model);
 
     viewer.setOrientation(QmlApplicationViewer::ScreenOrientationAuto);
     viewer.setMainQmlFile(QLatin1String("qml/alabinagame/main.qml"));

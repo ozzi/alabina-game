@@ -16,7 +16,7 @@ struct TestScene
     unsigned _correctAnswer;
 };
 
-class TestManager : public QAbstractListModel
+class TestModel : public QAbstractListModel
 {
     Q_OBJECT
     std::vector<Variant> _variants;
@@ -25,7 +25,7 @@ class TestManager : public QAbstractListModel
 
     void setNewScene (const TestScene & aNewScene);
 public:
-    explicit TestManager(QObject *parent = 0);
+    explicit TestModel(QObject *parent = 0);
     enum VariantRoles
     {
         VariantTitleRole = Qt::UserRole

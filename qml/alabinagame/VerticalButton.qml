@@ -8,15 +8,6 @@ CommonButton {
         text: buttonText
         anchors.centerIn: parent
         font.pointSize: 12
-        elide: Text.ElideRight
-        verticalAlignment: Text.AlignVCenter
-        horizontalAlignment: Text.AlignHCenter
-        wrapMode: Text.WordWrap
-        textFormat: Text.RichText
-        height: parent.height/4*3
-        width: parent.width/4*3
-        transform: Rotation {
-            angle: 90
-        }
+        rotation: 270
     }
 }

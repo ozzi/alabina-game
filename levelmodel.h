@@ -2,8 +2,8 @@
 #define LEVELMANAGER_H
 #include <memory>
 #include <QAbstractListModel>
-#include "descriptionmanager.h"
-#include "testmanager.h"
+#include "descriptionmodel.h"
+#include "testmodel.h"
 
 struct Chapter
 {
@@ -25,7 +25,7 @@ struct LevelDescription
 
 class QXmlStreamReader;
 
-class LevelManager : public QAbstractListModel
+class LevelModel : public QAbstractListModel
 {
     Q_OBJECT
     std::vector<std::shared_ptr<LevelDescription>> _levels;
@@ -45,7 +45,7 @@ class LevelManager : public QAbstractListModel
     Variant parseVariant (QXmlStreamReader *aXmlStreamReader);
 
 public:
-    explicit LevelManager(QObject *parent = 0);
+    explicit LevelModel(QObject *parent = 0);
     enum LevelRoles
     {
         LevelIdRole = Qt::UserRole,

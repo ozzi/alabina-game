@@ -19,35 +19,40 @@ Rectangle {
         onButtonPressed: gameWindow.menuSelector = "menu"
     }*/
     Item {
-        property string selector: cSceneManager.state
         id: centralItem
+        property string selector: cSceneManager.state
         anchors.fill : parent
-        GameLevelChapterDescription {
-            descriptionText: cDescriptionModel.description
-            anchors.fill: parent
+        GameLevelDescription {
             menuItemName: "description"
             menuSelectorName: centralItem.selector
+            descriptionText: cDescriptionModel.description
+            descriptionImage: cDescriptionModel.imagePath
+            anchors.fill: parent
             opacityLimit: 0.8
             onImagePressed: centralItem.selector = "gallery"
             onNextPressed: cSceneManager.nextScene()
             onPrevPressed: cSceneManager.prevScene()
         }
-
-        GameLevelChapterTest {
-            anchors.fill: parent
-            menuItemName: "test"
-            menuSelectorName: centralItem.selector
-            opacityLimit: 0.8
-        }
-
         GameLevelGallery {
-            anchors.fill: parent
             menuItemName: "gallery"
             menuSelectorName: centralItem.selector
+            anchors.fill: parent
+            opacityLimit: 0.8
+            onExitButtonTapped: centralItem.selector = "description"
+        }
+        GameLevelTest {
+            menuItemName: "test"
+            menuSelectorName: centralItem.selector
+            anchors.fill: parent
+            opacityLimit: 0.8
+        }
+        GameLevelFinal {
+            menuItemName: "final"
+            menuSelectorName: centralItem.selector
+            anchors.fill: parent
             opacityLimit: 0.8
         }
     }
-
     onGameLevelNameChanged: {
         cSceneManager.reset()
     }

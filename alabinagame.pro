@@ -31,11 +31,12 @@ symbian:TARGET.CAPABILITY += NetworkServices
 
 # The .cpp file which was generated for your project. Feel free to hack it.
 SOURCES += main.cpp \
-    descriptionmanager.cpp \
-    testmanager.cpp \
     scenemanager.cpp \
-    levelmanager.cpp \
-    crashlogger.cpp
+    crashlogger.cpp \
+    descriptionmodel.cpp \
+    levelmodel.cpp \
+    testmodel.cpp \
+    resultsmodel.cpp
 
 # Please do not modify the following two lines. Required for deployment.
 include(qmlapplicationviewer/qmlapplicationviewer.pri)
@@ -45,11 +46,12 @@ RESOURCES += \
     res.qrc
 
 HEADERS += \
-    descriptionmanager.h \
-    testmanager.h \
     scenemanager.h \
-    levelmanager.h \
-    crashlogger.h
+    crashlogger.h \
+    descriptionmodel.h \
+    levelmodel.h \
+    testmodel.h \
+    resultsmodel.h
 
 OTHER_FILES += \
     database.xml

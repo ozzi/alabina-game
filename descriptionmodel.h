@@ -16,15 +16,16 @@ struct DescriptionScene
     std::vector<Image> _images;
 };
 
-class DescriptionManager : public QAbstractListModel
+class DescriptionModel : public QAbstractListModel
 {
     Q_OBJECT
     std::vector<Image> _images;
     QString _description;
+    QString _imagePath;
     void setMaxColumn (int aMaxColumn);
     void setMaxRow (int aMaxRow);
 public:
-    explicit DescriptionManager(QObject *parent = 0);
+    explicit DescriptionModel(QObject *parent = 0);
 
     Q_PROPERTY(QString description READ description NOTIFY descriptionChanged)
     Q_PROPERTY(QString imagePath READ imagePath NOTIFY imagePathChanged)
