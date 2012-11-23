@@ -53,7 +53,7 @@ void ResultsModel::onTestHit()
     endResetModel();
     unsigned points = (1 << (_maximumFailCount - _failCount)) >> 1;
     _pointsTotal += points;
-    emit pointsTotalChanged();
+    emit pointsTotalChanged(_pointsTotal);
 }
 
 void ResultsModel::onTestMiss()
@@ -63,9 +63,28 @@ void ResultsModel::onTestMiss()
 
 void ResultsModel::onNewLevel(const std::shared_ptr<LevelDescription> & aLevelDescription)
 {
+    _levelName = aLevelDescription->_name;
+}
+
+void ResultsModel::onStateChanged(SceneState aNewState)
+{
+    switch (aNewState) {
+    case SS_Initial:
+        reset();
+        break;
+    case SS_Final:
+        emit levelPoints(_levelName, _pointsTotal);
+        break;
+    default:
+        break;
+    }
+}
+
+void ResultsModel::reset()
+{
     beginResetModel();
     _results.fill(0);
     endResetModel();
     _pointsTotal = 0;
-    emit pointsTotalChanged();
+    emit pointsTotalChanged(_pointsTotal);
 }

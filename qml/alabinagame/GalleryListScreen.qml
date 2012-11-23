@@ -34,27 +34,27 @@ ActiveScreen {
         anchors.topMargin: 20
         anchors.right: parent.right
         anchors.rightMargin: 20
-        width: 100
+        width: 200
         spacing: 20
         StartButton {
             id: listBackButton
             width: parent.width
             height: 50
-            buttonText: qsTr("Gallery")
+            buttonText: qsTr("Галлерея")
         }
         StartButton {
             id: listNextButton
             width: parent.width
             height: 50
-            buttonText: qsTr("Next")
-            opacity: { return galleryListView.currentIndex + 1 == galleryListView.count ? 0 : 1 }
+            buttonText: qsTr("Далее")
+            opacity: { return galleryListView.currentIndex + 1 == galleryListView.count ? 0 : 0.8 }
         }
         StartButton {
             id: listPrevButton
             width: parent.width
             height: 50
-            buttonText: qsTr("Prev")
-            opacity: { return galleryListView.currentIndex == 0 ? 0 : 1 }
+            buttonText: qsTr("Назад")
+            opacity: { return galleryListView.currentIndex == 0 ? 0 : 0.8 }
         }
     }
     function showImageAtIndex (index) {

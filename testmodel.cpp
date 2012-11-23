@@ -1,4 +1,5 @@
 #include "testmodel.h"
+#include <algorithm>
 #include <cassert>
 #include <QDebug>
 #include "crashlogger.h"
@@ -39,14 +40,35 @@ QString TestModel::description() const
     return _description;
 }
 
+QString TestModel::imagepath() const
+{
+    return _imagepath;
+}
+
 void TestModel::setNewScene(const TestScene &aNewScene)
 {
     _description = aNewScene._description;
-    emit descriptionChanged();
+    _imagepath = aNewScene._imagepath;
+    emit testChanged();
     beginResetModel();
     _correctAnswer = aNewScene._correctAnswer;
     _variants = aNewScene._variants;
+    shuffleVariants();
     endResetModel();
+}
+
+void TestModel::shuffleVariants()
+{
+    auto correct_answer_title = _variants.at(_correctAnswer).title;
+    std::random_shuffle(_variants.begin(), _variants.end());
+    for (auto variant = _variants.begin();
+         variant != _variants.end();
+         ++variant) {
+        if (variant->title == correct_answer_title) {
+            _correctAnswer = variant - _variants.begin();
+            break;
+        }
+    }
 }
 
 void TestModel::newTest(const TestScene &aTestScene)

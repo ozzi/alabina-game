@@ -8,6 +8,7 @@ ActiveScreen {
         id: gridScreen
         menuItemName: "grid"
         menuSelectorName: gallerySelector
+        width: parent.width
         anchors.fill: parent
     }
 

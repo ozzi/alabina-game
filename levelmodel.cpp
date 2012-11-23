@@ -50,9 +50,22 @@ QVariant LevelModel::data (const QModelIndex & aIndex, int aRole) const
     return result;
 }
 
-void LevelModel::setLevel (unsigned aNewLevel)
+void LevelModel::reset ()
 {
     emit levelChanged(_levels.at(_currentLevel));
+}
+
+void LevelModel::setLevel (unsigned aNewLevel)
+{
+    if (aNewLevel < _levels.size() && aNewLevel != _currentLevel) {
+        _currentLevel = aNewLevel;
+        reset();
+    }
+}
+
+unsigned LevelModel::level() const
+{
+    return _currentLevel;
 }
 
 void LevelModel::initFromXML (const QString & aXmlContent)
@@ -75,7 +88,7 @@ void LevelModel::initFromXML (const QString & aXmlContent)
     if (reader.hasError()) {
         qDebug() << "LevelManager::initFromXML error " << reader.error();
     } else {
-        emit levelChanged(_levels.at(_currentLevel));
+        reset();
     }
 }
 
@@ -246,6 +259,8 @@ TestScene LevelModel::parseTest(QXmlStreamReader *aXmlStreamReader)
                 result._correctAnswer = correct_answer.toUInt();
             } else if (aXmlStreamReader->name() == "variants") {
                 result._variants = parseVariants(aXmlStreamReader);
+            } else if (aXmlStreamReader->name() == "image") {
+                result._imagepath = _imagesPath + aXmlStreamReader->readElementText();
             }
         }
     }

@@ -8,32 +8,27 @@ Rectangle {
     color: "green"
     opacity: 0.4
 
-    Component {
-        id: recordsDelegate
-        Item {
+    ListView {
+        anchors.fill: parent
+        anchors.topMargin: 30
+        model: cRecordsModel
+        delegate: Item {
             width: parent.width - 60
             height: 40
             anchors.horizontalCenter: parent.horizontalCenter
             Text {
-                text: name
+                text: recordName
                 font.pointSize: 16
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.left: parent.left
             }
             Text {
-                text: score
+                text: recordPoints
                 font.pointSize: 32
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.right: parent.right
             }
         }
-    }
-
-    ListView {
-        anchors.fill: parent
-        anchors.topMargin: 30
-        model: RecordsModel {}
-        delegate: recordsDelegate
         spacing: 15
     }
 

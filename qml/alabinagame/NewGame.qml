@@ -1,11 +1,15 @@
 // import QtQuick 1.0 // to target S60 5th Edition or Maemo 5
 import QtQuick 1.1
 
-Item {
+ActiveScreen {
     id: gameWindow
+    signal leave
+    signal enter
     property string menuSelector: "menu"
     ActiveScreen {
         id: levelMenu
+        signal mainMenuPressed
+        signal gameLevelPressed(variant level)
         anchors.fill: parent
         menuItemName: "menu"
         menuSelectorName: gameWindow.menuSelector
@@ -17,11 +21,7 @@ Item {
                 anchors.horizontalCenter: parent.horizontalCenter
                 buttonText: levelName
                 onButtonPressed: {
-                    gameWindow.menuSelector = "gameLevel";
-                    levelScreen.levelName = levelName;
-                    levelScreen.levelDescription = levelDescription;
-                    levelScreen.levelImage = levelImage;
-                    cLevelModel.setLevel(index);
+                    levelMenu.gameLevelPressed(index);
                 }
             }
         }
@@ -43,24 +43,49 @@ Item {
                     height: 100
                     anchors.bottom: parent.bottom
                     buttonText: qsTr("Главное меню")
-                    onButtonPressed: mainWindow.menuSelector = "mainMenu"
+                    onButtonPressed: levelMenu.mainMenuPressed()
                 }
             }
         }
     }
-    ActiveScreen {
+    GameLevel {
         id: levelScreen
-        property string levelName
-        property string levelDescription
-        property string levelImage
         anchors.fill: parent
         menuItemName: "gameLevel"
         menuSelectorName: gameWindow.menuSelector
-        GameLevel {
-            gameLevelName: levelScreen.levelName
-            gameLevelDescription: levelScreen.levelDescription
-            gameLevelImage: levelScreen.levelImage
-            anchors.fill: parent
-        }
+    }
+    FinishGame {
+        id: finishGame
+        anchors.fill: parent
+        menuItemName: "finishGame"
+        menuSelectorName: gameWindow.menuSelector
+    }
+
+    function toggleSelectedLevel (level)
+    {
+        cLevelModel.level = level;
+        menuSelector = "gameLevel";
+    }
+    function toggleLevelList ()
+    {
+        menuSelector = "menu";
+    }
+    function toggleNextLevel ()
+    {
+        ++cLevelModel.level;
+    }
+    function toggleFinishGame ()
+    {
+        menuSelector = "finishGame";
+    }
+
+    Component.onCompleted: {
+        levelMenu.mainMenuPressed.connect(leave);
+        levelMenu.gameLevelPressed.connect(toggleSelectedLevel);
+        levelScreen.leave.connect(toggleLevelList);
+        levelScreen.nextLevel.connect(toggleNextLevel);
+        cSessionModel.allLevelsCompleted.connect(toggleFinishGame);
+        finishGame.donePressed.connect(leave);
+        enter.connect(toggleLevelList);
     }
 }

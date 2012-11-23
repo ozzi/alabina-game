@@ -43,6 +43,9 @@ class LevelModel : public QAbstractListModel
     TestScene parseTest (QXmlStreamReader* aXmlStreamReader);
     std::vector<Variant> parseVariants (QXmlStreamReader *aXmlStreamReader);
     Variant parseVariant (QXmlStreamReader *aXmlStreamReader);
+    void reset ();
+    void setLevel (unsigned aNewLevel);
+    unsigned level () const;
 
 public:
     explicit LevelModel(QObject *parent = 0);
@@ -56,7 +59,7 @@ public:
     int rowCount (const QModelIndex & aParent) const;
     QVariant data (const QModelIndex & aIndex, int aRole) const;
 
-    Q_INVOKABLE void setLevel (unsigned aNewLevel);
+    Q_PROPERTY(unsigned level READ level WRITE setLevel NOTIFY levelChanged)
 
     void initFromXML (const QString & aXmlContent);
     void setImagesPath (const QString & aImagesPath);

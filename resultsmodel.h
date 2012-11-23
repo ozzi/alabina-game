@@ -4,6 +4,7 @@
 #include <QAbstractListModel>
 #include <QVector>
 #include "levelmodel.h"
+#include "scenemanager.h"
 
 class ResultsModel : public QAbstractListModel
 {
@@ -11,7 +12,9 @@ class ResultsModel : public QAbstractListModel
     unsigned _pointsTotal;
     unsigned _maximumFailCount;
     unsigned _failCount;
+    QString _levelName;
     QVector<unsigned> _results;
+    void reset();
 public:
     explicit ResultsModel(QObject *parent = 0);
     enum ResultRoles
@@ -23,12 +26,14 @@ public:
     int rowCount (const QModelIndex & aParent) const;
     QVariant data (const QModelIndex &aIndex, int aRole) const;
 signals:
-    void pointsTotalChanged();
+    void pointsTotalChanged(unsigned aPointsTotal);
+    void levelPoints(const QString & aLevelName, unsigned aPoints);
 public slots:
     void onTestHit();
     void onTestMiss();
     void onNewTest();
     void onNewLevel(const std::shared_ptr<LevelDescription> & aLevelDescription);
+    void onStateChanged(SceneState aNewState);
 };
 
 #endif // RESULTSMODEL_H

@@ -17,38 +17,47 @@ Rectangle {
             spacing: 30
 
             StartButton {
+                id: newGameButton
                 buttonText: qsTr("Новая игра")
                 width: 400
                 height: 100
-                onButtonPressed: mainWindow.menuSelector = "newGame"
             }
 
             StartButton {
+                id: recordsButton
                 width: 400
                 height: 100
                 buttonText: qsTr("Таблица рекордов")
-                onButtonPressed: mainWindow.menuSelector = "records"
             }
 
             StartButton {
+                id: aboutButton
                 width: 400
                 height: 100
-                buttonText: qsTr("Правила")
-                onButtonPressed: mainWindow.menuSelector = "rules"
+                buttonText: qsTr("О программе")
             }
         }
     }
 
-    ActiveScreen {
+    NewGame {
+        id: newGameScreen
         anchors.fill: parent
         menuItemName: "newGame"
         menuSelectorName: mainWindow.menuSelector
-        NewGame {
-            anchors.fill: parent
+    }
+
+    ActiveScreen {
+        id: recordsScreen
+        anchors.fill: parent
+        menuItemName: "records"
+        menuSelectorName: mainWindow.menuSelector
+        Records {
+            anchors.centerIn: parent
         }
     }
 
     ActiveScreen {
+        id: aboutScreen
         anchors.fill: parent
         menuItemName: "rules"
         menuSelectorName: mainWindow.menuSelector
@@ -56,13 +65,29 @@ Rectangle {
             anchors.centerIn: parent
         }
     }
+    function toggleNewGame()
+    {
+        cSessionModel.setDefaultUserName();
+        newGameScreen.enter();
+        menuSelector = "newGame";
+    }
+    function toggleRecords()
+    {
+        menuSelector = "records"
+    }
+    function toggleAbout()
+    {
+        menuSelector = "rules"
+    }
+    function toggleMainMenu()
+    {
+        menuSelector = "mainMenu"
+    }
 
-    ActiveScreen {
-        anchors.fill: parent
-        menuItemName: "records"
-        menuSelectorName: mainWindow.menuSelector
-        Records {
-            anchors.centerIn: parent
-        }
+    Component.onCompleted: {
+        newGameButton.buttonPressed.connect(toggleNewGame);
+        recordsButton.buttonPressed.connect(toggleRecords);
+        aboutButton.buttonPressed.connect(toggleAbout);
+        newGameScreen.leave.connect(toggleMainMenu);
     }
 }

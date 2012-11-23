@@ -36,7 +36,10 @@ SOURCES += main.cpp \
     descriptionmodel.cpp \
     levelmodel.cpp \
     testmodel.cpp \
-    resultsmodel.cpp
+    resultsmodel.cpp \
+    sessionmodel.cpp \
+    levelpreviewmodel.cpp \
+    recordsmodel.cpp
 
 # Please do not modify the following two lines. Required for deployment.
 include(qmlapplicationviewer/qmlapplicationviewer.pri)
@@ -51,7 +54,10 @@ HEADERS += \
     descriptionmodel.h \
     levelmodel.h \
     testmodel.h \
-    resultsmodel.h
+    resultsmodel.h \
+    sessionmodel.h \
+    levelpreviewmodel.h \
+    recordsmodel.h
 
 OTHER_FILES += \
     database.xml

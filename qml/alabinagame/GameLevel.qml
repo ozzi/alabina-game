@@ -1,59 +1,64 @@
 // import QtQuick 1.0 // to target S60 5th Edition or Maemo 5
 import QtQuick 1.1
 
-Rectangle {
-    property string gameLevelName
-    property string gameLevelDescription
-    property string gameLevelImage
-
-    /*Image {
-        source: gameLevelImage
-        fillMode: Image.Stretch
+ActiveScreen {
+    id: levelScreen
+    signal leave
+    signal nextLevel
+    property string selector
+    Rectangle {
         anchors.fill: parent
-    }*/
-    /*StartButton {
-        width: parent.width/2
-        height: 50
-        anchors.horizontalCenter: parent.horizontalCenter
-        buttonText: "Меню"
-        onButtonPressed: gameWindow.menuSelector = "menu"
-    }*/
-    Item {
-        id: centralItem
-        property string selector: cSceneManager.state
-        anchors.fill : parent
-        GameLevelDescription {
-            menuItemName: "description"
-            menuSelectorName: centralItem.selector
-            descriptionText: cDescriptionModel.description
-            descriptionImage: cDescriptionModel.imagePath
-            anchors.fill: parent
-            opacityLimit: 0.8
-            onImagePressed: centralItem.selector = "gallery"
-            onNextPressed: cSceneManager.nextScene()
-            onPrevPressed: cSceneManager.prevScene()
-        }
-        GameLevelGallery {
-            menuItemName: "gallery"
-            menuSelectorName: centralItem.selector
-            anchors.fill: parent
-            opacityLimit: 0.8
-            onExitButtonTapped: centralItem.selector = "description"
-        }
-        GameLevelTest {
-            menuItemName: "test"
-            menuSelectorName: centralItem.selector
-            anchors.fill: parent
-            opacityLimit: 0.8
-        }
-        GameLevelFinal {
-            menuItemName: "final"
-            menuSelectorName: centralItem.selector
-            anchors.fill: parent
-            opacityLimit: 0.8
-        }
+        opacity: 0.8
+        color: "gray"
     }
-    onGameLevelNameChanged: {
-        cSceneManager.reset()
+    GameLevelInitial {
+        menuItemName: "initial"
+        menuSelectorName: selector
+        anchors.fill: parent
+        opacityLimit: 1
+        onStartButtonPressed: cSceneManager.nextScene()
+        onLeaveButtonPressed: leave()
+    }
+    GameLevelDescription {
+        menuItemName: "description"
+        menuSelectorName: selector
+        descriptionText: cDescriptionModel.description
+        descriptionImage: cDescriptionModel.imagePath
+        anchors.fill: parent
+        opacityLimit: 1
+        onImagePressed: selector = "gallery"
+        onNextPressed: cSceneManager.nextScene()
+        onPrevPressed: cSceneManager.prevScene()
+    }
+    GameLevelGallery {
+        menuItemName: "gallery"
+        menuSelectorName: selector
+        anchors.fill: parent
+        opacityLimit: 1
+        onExitButtonTapped: selector = "description"
+    }
+    GameLevelTest {
+        menuItemName: "test"
+        menuSelectorName: selector
+        anchors.fill: parent
+        opacityLimit: 1
+    }
+    GameLevelCompleted {
+        menuItemName: "final"
+        menuSelectorName: selector
+        anchors.fill: parent
+        opacityLimit: 1
+        onContinuePressed: nextLevel()
+        onRestartPressed: cSceneManager.reset()
+        onMenuPressed: leave()
+    }
+    function toggleState()
+    {
+        selector = cSceneManager.state;
+    }
+
+    Component.onCompleted: {
+        toggleState();
+        cSceneManager.stateChanged.connect(toggleState);
     }
 }

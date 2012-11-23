@@ -13,6 +13,7 @@ struct TestScene
 {
     std::vector<Variant> _variants;
     QString _description;
+    QString _imagepath;
     unsigned _correctAnswer;
 };
 
@@ -21,9 +22,11 @@ class TestModel : public QAbstractListModel
     Q_OBJECT
     std::vector<Variant> _variants;
     QString _description;
+    QString _imagepath;
     unsigned _correctAnswer;
 
     void setNewScene (const TestScene & aNewScene);
+    void shuffleVariants();
 public:
     explicit TestModel(QObject *parent = 0);
     enum VariantRoles
@@ -33,11 +36,13 @@ public:
     int rowCount (const QModelIndex & aParent) const;
     QVariant data (const QModelIndex & aIndex, int aRole) const;
 
-    Q_PROPERTY(QString description READ description NOTIFY descriptionChanged)
+    Q_PROPERTY(QString description READ description NOTIFY testChanged)
     QString description () const;
+    Q_PROPERTY(QString imagepath READ imagepath NOTIFY testChanged)
+    QString imagepath () const;
 
 signals:
-    void descriptionChanged();
+    void testChanged();
     void hit();
     void miss();
 public slots:
