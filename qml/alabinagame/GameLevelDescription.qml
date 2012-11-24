@@ -4,9 +4,21 @@ import QtQuick 1.1
 ActiveScreen {
     property string descriptionText
     property string descriptionImage
+    property string descriptionTitle
     signal imagePressed
     signal nextPressed
     signal prevPressed
+
+    ButtonText {
+        id: contentTitle
+        anchors.left: parent.left
+        anchors.leftMargin: 20
+        anchors.top: parent.top
+        anchors.topMargin: 20
+        width: contentFlickable.width
+        height: 50
+        text: descriptionTitle
+    }
 
     Flickable {
         id: contentFlickable
@@ -14,11 +26,10 @@ ActiveScreen {
         interactive: false
         anchors.left: parent.left
         anchors.leftMargin: 20
-        anchors.rightMargin: 20
-        anchors.top: parent.top
+        anchors.top: contentTitle.bottom
         anchors.topMargin: 20
         anchors.bottom: parent.bottom
-        anchors.bottomMargin: 38
+        anchors.bottomMargin: 36
         width: parent.width * 0.6
         contentWidth: contentFlickable.width
         contentHeight: contentDescription.height
@@ -28,6 +39,11 @@ ActiveScreen {
             width: parent.width
             text: descriptionText
         }
+        function reset ()
+        {
+            contentY = 0;
+        }
+
         function prevPage ()
         {
             contentY -= height;
@@ -112,5 +128,7 @@ ActiveScreen {
     Component.onCompleted: {
         upButton.buttonPressed.connect(contentFlickable.prevPage);
         bottomButton.buttonPressed.connect(contentFlickable.nextPage);
+        prevPressed.connect(contentFlickable.reset);
+        nextPressed.connect(contentFlickable.reset);
     }
 }

@@ -57,7 +57,10 @@ void LevelModel::reset ()
 
 void LevelModel::setLevel (unsigned aNewLevel)
 {
-    if (aNewLevel < _levels.size() && aNewLevel != _currentLevel) {
+    if (aNewLevel >= _levels.size()) {
+        aNewLevel = 0;
+    }
+    if (aNewLevel != _currentLevel) {
         _currentLevel = aNewLevel;
         reset();
     }

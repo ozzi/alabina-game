@@ -13,7 +13,7 @@ SessionModel::SessionModel(QObject *parent) :
     setRoleNames(role_names);
 }
 
-void SessionModel::setLevelsNumber (unsigned aLevelsNumber)
+void SessionModel::setLevelsInfo (unsigned aLevelsNumber)
 {
     _levelsNumber = aLevelsNumber;
 }

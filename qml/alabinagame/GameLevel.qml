@@ -22,6 +22,7 @@ ActiveScreen {
     GameLevelDescription {
         menuItemName: "description"
         menuSelectorName: selector
+        descriptionTitle: cSceneManager.chapter
         descriptionText: cDescriptionModel.description
         descriptionImage: cDescriptionModel.imagePath
         anchors.fill: parent

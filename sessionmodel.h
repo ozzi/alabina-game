@@ -31,7 +31,7 @@ public:
     void setUsername (const QString &username);
     Q_INVOKABLE void setDefaultUserName();
     unsigned totalPoints () const;
-    void setLevelsNumber (unsigned aLevelsNumber);
+    void setLevelsInfo (unsigned aLevelsNumber);
 signals:
     void usernameChanged(const QString & username);
     void totalPointsChanged(unsigned totalPoints);

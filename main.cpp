@@ -72,7 +72,7 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
     level_model.setImagesPath(QString::fromUtf8(image_path));
     level_model.initFromXML(xml_content);
 
-    session_model.setLevelsNumber(level_model.rowCount(QModelIndex()));
+    session_model.setLevelsInfo(level_model.rowCount(QModelIndex()));
 
     QmlApplicationViewer viewer;
     viewer.rootContext()->setContextProperty("cDescriptionModel", &description_model);

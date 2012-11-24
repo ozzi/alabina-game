@@ -4,6 +4,7 @@
 #include <QObject>
 #include <memory.h>
 #include <vector>
+#include <map>
 #include "descriptionmodel.h"
 #include "testmodel.h"
 #include "levelmodel.h"
@@ -14,33 +15,45 @@ public:
     virtual void emit_state() = 0;
 };
 
+struct DescriptionSceneExt : public DescriptionScene
+{
+    unsigned _chapterNumber;
+    DescriptionSceneExt(const DescriptionScene & aScene, unsigned aChapterNumber);
+};
+
+struct TestSceneExt : public TestScene
+{
+    unsigned _chapterNumber;
+    TestSceneExt(const TestScene & aScene, unsigned aChapterNumber);
+};
+
 class DescriptionSceneStateDelegate
 {
 public:
-    virtual void emit_description (const DescriptionScene & scene) = 0;
+    virtual void emit_description (const DescriptionSceneExt & scene) = 0;
 };
 
 class TestSceneStateDelegate
 {
 public:
-    virtual void emit_test (const TestScene & scene) = 0;
+    virtual void emit_test (const TestSceneExt & scene) = 0;
 };
 
 class DescriptionSceneState : public CommonSceneState
 {
-    DescriptionScene _description;
+    DescriptionSceneExt _description;
     DescriptionSceneStateDelegate *_delegate;
 public:
-    DescriptionSceneState (const DescriptionScene &scene, DescriptionSceneStateDelegate *aDelegate);
+    DescriptionSceneState (const DescriptionSceneExt &scene, DescriptionSceneStateDelegate *aDelegate);
     void emit_state();
 };
 
 class TestSceneState : public CommonSceneState
 {
-    TestScene _test;
+    TestSceneExt _test;
     TestSceneStateDelegate *_delegate;
 public:
-    TestSceneState (const TestScene & scene, TestSceneStateDelegate *aDelegate);
+    TestSceneState (const TestSceneExt & scene, TestSceneStateDelegate *aDelegate);
     void emit_state();
 };
 
@@ -58,25 +71,30 @@ class SceneManager : public QObject, public DescriptionSceneStateDelegate, publi
     Chapters _originalChapters;
     std::vector<std::shared_ptr<CommonSceneState>> _scenes;
     std::vector<std::shared_ptr<CommonSceneState>>::const_iterator _currentScene;
+    unsigned _chapterNumber;
     SceneState _state;
     unsigned _maximumTestsLength;
 
     void buildList();
-    void descriptionsWorker(const std::vector<DescriptionScene> &aDescriptions);
-    void testsWorker(const std::vector<TestScene> &aTests);
-    void shuffleTestsWorker(const std::vector<TestScene> &aTests);
+    void descriptionsWorker(const std::vector<DescriptionScene> &aDescriptions, unsigned aChapterNumber);
+    void testsWorker(const std::vector<TestScene> &aTests, unsigned aChapterNumber);
+    void shuffleTestsWorker(const std::vector<TestScene> &aTests, unsigned aChapterNumber);
     void setState (SceneState aSceneState);
+    void setChapter (unsigned aChapterNumber);
 public:
     explicit SceneManager(QObject *parent = 0);
     Q_PROPERTY(QString state READ state NOTIFY stateChanged)
     QString state () const;
+    Q_PROPERTY(QString chapter READ chapter NOTIFY chapterChanged)
+    QString chapter () const;
     Q_INVOKABLE void reset();
-    void emit_description(const DescriptionScene &scene);
-    void emit_test(const TestScene &scene);
+    void emit_description(const DescriptionSceneExt &scene);
+    void emit_test(const TestSceneExt &scene);
 signals:
     void stateChanged(SceneState aNewState);
     void descriptionChanged (const DescriptionScene& aDescriptionScene) const;
     void testChanged (const TestScene& aTestScene) const;
+    void chapterChanged () const;
 public slots:
     void newLevel (const std::shared_ptr<LevelDescription> & aLevelDescription);
     void nextScene();
