@@ -43,8 +43,8 @@ void SceneManager::buildList()
     _scenes.clear();
     for (auto chapter = _originalChapters.begin(); chapter != _originalChapters.end(); ++chapter) {
         descriptionsWorker(chapter->_descriptions, chapter - _originalChapters.begin());
-        shuffleTestsWorker(chapter->_tests, chapter - _originalChapters.begin());
-        //testsWorker(chapter->_tests, chapter - _originalChapters.begin());
+        //shuffleTestsWorker(chapter->_tests, chapter - _originalChapters.begin());
+        testsWorker(chapter->_tests, chapter - _originalChapters.begin());
     }
 }
 

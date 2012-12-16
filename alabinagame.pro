@@ -39,7 +39,8 @@ SOURCES += main.cpp \
     resultsmodel.cpp \
     sessionmodel.cpp \
     levelpreviewmodel.cpp \
-    recordsmodel.cpp
+    recordsmodel.cpp \
+    soundmodel.cpp
 
 # Please do not modify the following two lines. Required for deployment.
 include(qmlapplicationviewer/qmlapplicationviewer.pri)
@@ -57,7 +58,8 @@ HEADERS += \
     resultsmodel.h \
     sessionmodel.h \
     levelpreviewmodel.h \
-    recordsmodel.h
+    recordsmodel.h \
+    soundmodel.h
 
 OTHER_FILES += \
     database.xml

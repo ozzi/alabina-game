@@ -5,7 +5,9 @@ Rectangle {
     id: button
     property string buttonText
     signal buttonPressed
+    property bool animateShow: true
     NumberAnimation on scale {
+        id: animateScale
         from: 0; to: 1; duration: 1000
     }
     states: [
@@ -30,11 +32,9 @@ Rectangle {
         Transition {
             from: "selected"
             to: "notselected"
-            ParallelAnimation {
-                NumberAnimation {
-                    properties: "scale"
-                    duration: 500
-                }
+            NumberAnimation {
+                properties: "scale"
+                duration: 500
             }
         }
     ]
@@ -42,5 +42,12 @@ Rectangle {
         id: mouseRegion
         anchors.fill: parent
         onClicked: buttonPressed()
+    }
+    onAnimateShowChanged: {
+        if (animateShow) {
+            animateScale.start();
+        } else {
+            animateScale.complete();
+        }
     }
 }

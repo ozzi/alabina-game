@@ -1,8 +1,5 @@
 <RCC>
     <qresource prefix="/">
-        <file alias="vintage.jpg">qml/alabinagame/images/AGITAZIA1.jpg</file>
-        <file alias="weapon.jpg">qml/alabinagame/images/14148_avtomat-kalashnikova_oruzhie_1680x1050_(www.GdeFon.ru).jpg</file>
-        <file alias="money.jpg">qml/alabinagame/images/Money_Oriental_Coins.jpg</file>
         <file alias="menu.jpg">qml/alabinagame/images/PLAIN BLUE INTERIOR.jpg</file>
         <file alias="database.xml">database.xml</file>
     </qresource>

@@ -12,6 +12,13 @@ Rectangle {
         anchors.fill: parent
         menuItemName: "mainMenu"
         menuSelectorName: mainWindow.menuSelector
+        ButtonText {
+            id: applicationName
+            text: qsTr("Игра-путешествие 'Музейный хранитель'")
+            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.top: parent.top
+            anchors.topMargin: 50
+        }
         Column {
             anchors.centerIn: parent
             spacing: 30

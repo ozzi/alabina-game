@@ -27,6 +27,7 @@ class TestModel : public QAbstractListModel
 
     void setNewScene (const TestScene & aNewScene);
     void shuffleVariants();
+    void removeIncorrectVariant (unsigned aVariantNumber);
 public:
     explicit TestModel(QObject *parent = 0);
     enum VariantRoles

@@ -10,6 +10,7 @@
 #include "sessionmodel.h"
 #include "levelpreviewmodel.h"
 #include "recordsmodel.h"
+#include "soundmodel.h"
 
 Q_DECL_EXPORT int main(int argc, char *argv[])
 {
@@ -23,9 +24,14 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
     SessionModel session_model;
     LevelPreviewModel preview_model;
     RecordsModel records_model;
+    SoundModel sound_model;
+    sound_model.setSuccessPath("");
+    sound_model.setFailPath("");
 
     QObject::connect(&test_model, SIGNAL(hit()), &result_model, SLOT(onTestHit()));
     QObject::connect(&test_model, SIGNAL(miss()), &result_model, SLOT(onTestMiss()));
+    QObject::connect(&test_model, SIGNAL(hit()), &sound_model, SLOT(onTestHit()));
+    QObject::connect(&test_model, SIGNAL(miss()), &sound_model, SLOT(onTestMiss()));
     QObject::connect(&level_model,
                      SIGNAL(levelChanged(std::shared_ptr<LevelDescription>)),
                      &result_model,

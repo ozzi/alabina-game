@@ -20,6 +20,7 @@ ActiveScreen {
     Component {
         id: variantsDelegate
         StartButton {
+            animateShow: testVariants.animateStartButton
             buttonText: variantTitle
             color: "green"
             width: testVariants.width
@@ -31,6 +32,7 @@ ActiveScreen {
     }
     ListView {
         id: testVariants
+        property bool animateStartButton: true
         width: parent.width/5*2
         height: count*100 + (count-1) * spacing
         anchors.top: textColumn.bottom
@@ -53,5 +55,20 @@ ActiveScreen {
     function testHasImage()
     {
         return cTestModel.imagepath.length > 0;
+    }
+    function onHit ()
+    {
+        testVariants.animateStartButton = true;
+        console.debug("HIT");
+    }
+    function onMiss()
+    {
+        testVariants.animateStartButton = false;
+        console.debug("MISS");
+    }
+
+    Component.onCompleted: {
+        cTestModel.hit.connect(onHit);
+        cTestModel.miss.connect(onMiss);
     }
 }

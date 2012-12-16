@@ -8,8 +8,8 @@ Image {
     asynchronous: true
     cache: false
     smooth: true
-    sourceSize.width: 1280
-    sourceSize.height: 1024
+    //sourceSize.width: 1280
+    //sourceSize.height: 1024
     MouseArea {
         anchors.fill: parent
         onClicked: buttonPressed()

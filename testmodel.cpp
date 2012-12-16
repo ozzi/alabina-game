@@ -82,5 +82,18 @@ void TestModel::tryVariant(unsigned aVarianNumber)
         emit hit();
     } else {
         emit miss();
+        //removeIncorrectVariant(aVarianNumber);
+    }
+}
+
+void TestModel::removeIncorrectVariant(unsigned aVariantNumber)
+{
+    if (aVariantNumber < _variants.size()) {
+        beginResetModel();
+        if (aVariantNumber < _correctAnswer) {
+            --_correctAnswer;
+        }
+        _variants.erase(_variants.begin() + aVariantNumber);
+        endResetModel();
     }
 }
