@@ -25,8 +25,8 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
     LevelPreviewModel preview_model;
     RecordsModel records_model;
     SoundModel sound_model;
-    sound_model.setSuccessPath("");
-    sound_model.setFailPath("");
+    sound_model.setSuccessPath("sounds/alabina_hit.wav");
+    sound_model.setFailPath("sounds/alabina_miss.wav");
 
     QObject::connect(&test_model, SIGNAL(hit()), &result_model, SLOT(onTestHit()));
     QObject::connect(&test_model, SIGNAL(miss()), &result_model, SLOT(onTestMiss()));

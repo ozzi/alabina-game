@@ -5,8 +5,8 @@ Rectangle {
     id: mainWindow
     property string menuSelector: "mainMenu"
     //anchors.centerIn: parent
-    width: 1280
-    height: 1024
+    width: 1680
+    height: 1050
     MenuBackground {}
     ActiveScreen {
         anchors.fill: parent

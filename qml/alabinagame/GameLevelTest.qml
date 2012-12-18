@@ -36,6 +36,7 @@ ActiveScreen {
         width: parent.width/5*2
         height: count*100 + (count-1) * spacing
         anchors.top: textColumn.bottom
+        anchors.bottom: parent.bottom
         anchors.left: parent.left
         anchors.leftMargin: testHasImage() ? parent.width/20 : parent.width/10*3
         spacing: 40
@@ -47,8 +48,8 @@ ActiveScreen {
         anchors.right: parent.right
         anchors.rightMargin: parent.width/20
         anchors.top: textColumn.bottom
-        anchors.bottom: testVariants.bottom
         width: parent.width/5*2
+        height: parent.height - 2 * textColumn.height
         opacity: testHasImage() ? 1 : 0
         source: cTestModel.imagepath
     }

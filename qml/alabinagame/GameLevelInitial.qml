@@ -20,7 +20,8 @@ ActiveScreen {
         anchors.right: parent.right
         anchors.rightMargin: 50
         height: 400
-        spacing: 20
+        spacing: { return count > 1 ? (width - height * count) / (count - 1) : 0; }
+
         interactive: false
         clip: true
         orientation: ListView.Horizontal
