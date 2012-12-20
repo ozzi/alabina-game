@@ -19,7 +19,7 @@ ActiveScreen {
         anchors.leftMargin: 50
         anchors.right: parent.right
         anchors.rightMargin: 50
-        height: 400
+        height: 540
         spacing: { return count > 1 ? (width - height * count) / (count - 1) : 0; }
 
         interactive: false

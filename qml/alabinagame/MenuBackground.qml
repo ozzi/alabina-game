@@ -2,7 +2,6 @@
 import QtQuick 1.1
 
 Image {
-    source: "qrc:/menu.jpg"
     fillMode: Image.Stretch
     anchors.fill: parent
 }

@@ -1,6 +1,9 @@
 <RCC>
     <qresource prefix="/">
-        <file alias="menu.jpg">qml/alabinagame/images/PLAIN BLUE INTERIOR.jpg</file>
         <file alias="database.xml">database.xml</file>
+        <file alias="money.jpg">images/C~000061.jpg</file>
+        <file alias="weapon.jpg">images/exp_0001_2.jpg</file>
+        <file alias="plakaty.jpg">images/IMG_5605.JPG</file>
+        <file alias="main.jpg">images/Ночной музей.JPG</file>
     </qresource>
 </RCC>

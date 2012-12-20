@@ -65,6 +65,20 @@ ActiveScreen {
     {
         cLevelModel.level = level;
         menuSelector = "gameLevel";
+        switch (level) {
+        case 0:
+            levelScreen.menuImage = "qrc:/money.jpg";
+            break;
+        case 1:
+            levelScreen.menuImage = "qrc:/weapon.jpg";
+            break;
+        case 2:
+            levelScreen.menuImage = "qrc:/plakaty.jpg";
+            break;
+        default:
+            levelScreen.menuImage = "qrc:/main.jpg";
+            break;
+        }
     }
     function toggleLevelList ()
     {

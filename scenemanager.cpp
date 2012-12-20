@@ -27,7 +27,7 @@ void TestSceneState::emit_state()
 }
 
 SceneManager::SceneManager(QObject *parent) :
-    QObject(parent), _currentScene(_scenes.end()), _state(SS_Initial), _maximumTestsLength(3)
+    QObject(parent), _currentScene(_scenes.end()), _state(SS_Initial), _maximumTestsLength(6)
 {}
 
 void SceneManager::reset()
@@ -43,8 +43,8 @@ void SceneManager::buildList()
     _scenes.clear();
     for (auto chapter = _originalChapters.begin(); chapter != _originalChapters.end(); ++chapter) {
         descriptionsWorker(chapter->_descriptions, chapter - _originalChapters.begin());
-        //shuffleTestsWorker(chapter->_tests, chapter - _originalChapters.begin());
-        testsWorker(chapter->_tests, chapter - _originalChapters.begin());
+        shuffleTestsWorker(chapter->_tests, chapter - _originalChapters.begin());
+        //testsWorker(chapter->_tests, chapter - _originalChapters.begin());
     }
 }
 

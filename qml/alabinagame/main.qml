@@ -4,10 +4,11 @@ import QtQuick 1.1
 Rectangle {
     id: mainWindow
     property string menuSelector: "mainMenu"
-    //anchors.centerIn: parent
-    width: 1680
-    height: 1050
-    MenuBackground {}
+    width: 1920
+    height: 1080
+    MenuBackground {
+        source: "qrc:/main.jpg"
+    }
     ActiveScreen {
         anchors.fill: parent
         menuItemName: "mainMenu"

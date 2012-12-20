@@ -29,8 +29,8 @@ ActiveScreen {
         anchors.top: contentTitle.bottom
         anchors.topMargin: 20
         anchors.bottom: parent.bottom
-        anchors.bottomMargin: 36
-        width: parent.width * 0.6
+        anchors.bottomMargin: 44
+        width: parent.width * 0.7
         contentWidth: contentFlickable.width
         contentHeight: contentDescription.height
         boundsBehavior: Flickable.StopAtBounds
@@ -75,8 +75,8 @@ ActiveScreen {
             anchors.top: chapterImage.bottom
             anchors.topMargin: 20
             width: parent.width
-            height: (parent.height - chapterImage.height)/2
-            spacing: 30
+            height: (parent.height - chapterImage.height)
+            spacing: 25
             StartButton {
                 width: parent.width/2
                 height: 50
@@ -98,17 +98,10 @@ ActiveScreen {
                 buttonText: "Назад"
                 onButtonPressed: prevPressed()
             }
-        }
-        Item {
-            anchors.top: chapterMenu.bottom
-            anchors.topMargin: 20
-            anchors.bottom: parent.bottom
-            width: parent.width
             StartButton {
                 id: upButton
                 width: parent.width/2
                 height: 50
-                anchors.top: parent.top
                 anchors.horizontalCenter: parent.horizontalCenter
                 buttonText: "Предыдущая страница"
                 opacity: { return contentFlickable.contentY > 0 ? 0.8 : 0; }
@@ -117,7 +110,6 @@ ActiveScreen {
                 id: bottomButton
                 width: parent.width/2
                 height: 50
-                anchors.top: upButton.bottom
                 anchors.topMargin: 30
                 anchors.horizontalCenter: parent.horizontalCenter
                 buttonText: "Следующая страница"

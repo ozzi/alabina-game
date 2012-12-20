@@ -6,6 +6,10 @@ ActiveScreen {
     signal leave
     signal nextLevel
     property string selector
+    property string menuImage
+    MenuBackground {
+        source: menuImage
+    }
     Rectangle {
         anchors.fill: parent
         opacity: 0.8
